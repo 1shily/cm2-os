@@ -8,9 +8,9 @@ BUILD_DIR = build
 CFLAGS = -march=rv32i -mabi=ilp32
 CCFLAGS = -march=rv32i -mabi=ilp32 -nostdlib -ffreestanding -fno-exceptions -fno-builtin -Wall -Wextra
 S_SOURCE = bootloader.s
-C_SOURCE = kernel/kernel.c
+C_SOURCE = kernel/kernel.c kernel/util.c
 
-all: clean bootloader.s kernelc
+all: clean bootloader.s kernelc obj
 
 bootloader.s:
 	$(AS) $(CFLAGS) -o $(BUILD_DIR)/bootloader.o $(S_SOURCE)
@@ -19,6 +19,7 @@ kernelc:
 	$(GCC) $(CCFLAGS) -o $(BUILD_DIR)/kernel.elf $(BUILD_DIR)/bootloader.o $(C_SOURCE)
 	$(OBJCOPY) -O binary $(BUILD_DIR)/kernel.elf $(BUILD_DIR)/kernel.bin
 
+obj:
 clean:
 	rm -rf $(BUILD_DIR)/*
 

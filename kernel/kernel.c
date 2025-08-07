@@ -1,6 +1,13 @@
+#include "globals.h"
+#include "util.h"
+
 void kmain(void) 
 {
-    for (int i = 0; i < 255; i++) {
-        (*(volatile unsigned char*)0xFFFC) = i;
-    }
+    /*
+        Bootloader has loaded us,
+        Our stack is at 0x08000000
+        MMIO Registers are reset
+        TTY Display is cleared for us
+    */
+    kprint("[LOG]: Kernel Loaded");
 }

@@ -6,7 +6,10 @@
 .equ TTY_WRITE, 0xFFFF
 .equ TTY_CHAR,  0xFFFE
 .equ TTY_LOC,   0xFFFD
+.equ TTY_CLEAR, 0xFFFB
 .equ AUDIO,     0xFFFC
+# STACK
+.equ STACK_TOP, 0x08000000
 
 _start:
     # Reset all registers
@@ -48,10 +51,8 @@ _start:
     sb x0, 0(t0)
     li t0, AUDIO
     sb x0, 0(t0)
-    li t0, TTY_WRITE
-    sb x0, 0(t0)
     # IO has been Reset
-    # la sp, _stack_top
+    li sp, STACK_TOP
     jal x0, kmain
 hang:
     jal x0, hang
