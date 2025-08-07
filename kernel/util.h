@@ -1,6 +1,5 @@
 #include "globals.h"
 
-void kprint_char(char c);
-void kttyclear(void);
-void kprint(const char* str); 
-void kprint_hex(unsigned int num);
+void kputc(char ch);
+void kputs(const char* str); 
+void kpanic(const char* cause);

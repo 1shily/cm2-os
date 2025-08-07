@@ -10,7 +10,10 @@ CCFLAGS = -march=rv32i -mabi=ilp32 -nostdlib -ffreestanding -fno-exceptions -fno
 S_SOURCE = bootloader.s
 C_SOURCE = kernel/kernel.c kernel/util.c
 
-all: clean bootloader.s kernelc obj
+all: clean bootloader.s kernelc
+
+dump:
+	$(RISCV_PREFIX)objdump -d -M no-aliases $(BUILD_DIR)/kernel.elf >> $(BUILD_DIR)/kernel_dump.s
 
 bootloader.s:
 	$(AS) $(CFLAGS) -o $(BUILD_DIR)/bootloader.o $(S_SOURCE)
@@ -19,8 +22,7 @@ kernelc:
 	$(GCC) $(CCFLAGS) -o $(BUILD_DIR)/kernel.elf $(BUILD_DIR)/bootloader.o $(C_SOURCE)
 	$(OBJCOPY) -O binary $(BUILD_DIR)/kernel.elf $(BUILD_DIR)/kernel.bin
 
-obj:
 clean:
-	rm -rf $(BUILD_DIR)/*
+	rm -rf $(BUILD_DIR)/bootloader.o $(BUILD_DIR)/kernel_dump.s $(BUILD_DIR)/kernel.bin $(BUILD_DIR)/kernel.elf
 
-.PHONY: all bootloader.s kernelc clean
+.PHONY: dump all bootloader.s kernelc clean

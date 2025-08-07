@@ -5,9 +5,13 @@ void kmain(void)
 {
     /*
         Bootloader has loaded us,
-        Our stack is at 0x08000000
+        Our stack is at 0xFFFA
         MMIO Registers are reset
         TTY Display is cleared for us
     */
-    kprint("[LOG]: Kernel Loaded");
+   //kprint("[LOG]: Kernel Loaded")
+   while (1)
+   {
+    kputc('$');
+   }
 }

@@ -1,29 +1,30 @@
 #include "globals.h"
 #include "util.h"
 
-void kprint_char(char c) {
-    *TTY_CHAR = c;
-    *TTY_LOC = text_loc++;
-    *TTY_WRITE = 1;
-}
+extern void hang(void);
 
-void kprint(const char* str) 
+void kputc(char ch) 
 {
-    unsigned char text_loc = 0;
-    while (*str)
+    u8 old_text_loc = *IO_TTY_LOC;
+    *IO_TTY_CHAR = (u8)ch;
+    *IO_TTY_LOC = old_text_loc + 1;
+    *IO_TTY_WRITE = 1;
+}
+
+void kputs(const char* str) 
+{
+    u8 OLD_TTY_LOC = *IO_TTY_LOC;
+    while (*str++)
     {
-        *TTY_CHAR = *str;
-        *TTY_LOC = ++text_loc;
-        *TTY_WRITE = 1;
-        str++;
+        *IO_TTY_CHAR = *str;
+        *IO_TTY_LOC = ++OLD_TTY_LOC;
+        *IO_TTY_WRITE = 1;
     }
 }
 
-void kprint_hex(unsigned int num) {
-    const char* hex = "0123456789ABCDEF";
-    kprint("0x");
-    for (int i = 7; i >= 0; i--) {
-        char digit = (num >> (i * 4)) & 0xF;
-        kprint_char(hex[digit]);
-    }
+void kpanic(const char* cause)
+{
+    *IO_AUDIO = 255;
+    kputs(cause);
+    asm volatile("j hang");
 }

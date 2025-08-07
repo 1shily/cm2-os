@@ -1,6 +1,7 @@
 .section .text
 .extern kmain
 .globl _start
+.globl hang
 
 # MMIO
 .equ TTY_WRITE, 0xFFFF
@@ -9,7 +10,7 @@
 .equ TTY_CLEAR, 0xFFFB
 .equ AUDIO,     0xFFFC
 # STACK
-.equ STACK_TOP, 0x08000000
+.equ STACK_TOP, 0xFFFA
 
 _start:
     # Reset all registers
@@ -51,8 +52,10 @@ _start:
     sb x0, 0(t0)
     li t0, AUDIO
     sb x0, 0(t0)
+    li t0, TTY_CLEAR
+    sb x0, 0(t0)
     # IO has been Reset
     li sp, STACK_TOP
     jal x0, kmain
 hang:
-    jal x0, hang
+    jal x0, 0
