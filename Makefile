@@ -6,11 +6,11 @@ OBJCOPY = $(RISCV_PREFIX)objcopy
 
 BUILD_DIR = build
 CFLAGS = -march=rv32i -mabi=ilp32
-CCFLAGS = -march=rv32i -mabi=ilp32 -nostdlib -ffreestanding -fno-exceptions -fno-builtin -Wall -Wextra
+CCFLAGS = -march=rv32i -mabi=ilp32 -nostdlib -ffreestanding -fno-exceptions -fno-builtin -Wall -Wextra -T linker.ld
 S_SOURCE = bootloader.s
 C_SOURCE = kernel/kernel.c kernel/util.c
 
-all: clean bootloader.s kernelc
+all: clean bootloader.s kernelc dump
 
 dump:
 	$(RISCV_PREFIX)objdump -d -M no-aliases $(BUILD_DIR)/kernel.elf >> $(BUILD_DIR)/kernel_dump.s

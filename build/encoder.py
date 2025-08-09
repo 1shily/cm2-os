@@ -19,9 +19,6 @@ def file_bytes_to_list(file_path: str) -> list[int]:
         return []
 
 def hex_text_to_byte_list(text: str) -> list[int]:
-    """
-    Converts a multi-line string of hex values to a flat list of byte integers.
-    """
     lines = [line.strip() for line in text.strip().splitlines() if line.strip()]
     byte_list = []
     for line in lines:
@@ -31,9 +28,6 @@ def hex_text_to_byte_list(text: str) -> list[int]:
     return byte_list
 
 def encodeToMemory(data: list[int]) -> str:
-    """
-    Turns a list of integers into a string for a huge memory.
-    """
     huge_memory_size = 65535
     while huge_memory_size > len(data):
         data.append(0)
